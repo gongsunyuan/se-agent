@@ -21,7 +21,7 @@ def log_trace(entry: dict) -> None:
     """追加一条 trace 记录到 trace.log。"""
     if _log_dir is None:
         return
-    entry.setdefault("timestamp", datetime.now().isoformat())
+    entry = {**entry, "timestamp": entry.get("timestamp", datetime.now().isoformat())}
     with _lock:
         with open(_log_dir / "trace.log", "a", encoding="utf-8") as f:
             f.write(json.dumps(entry, ensure_ascii=False) + "\n")
