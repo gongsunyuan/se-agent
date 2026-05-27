@@ -36,18 +36,49 @@ def clarify(state: AgentState) -> dict:
         except json.JSONDecodeError:
             questions = [raw]
 
-    answers = []
-    console.print(f"\n[bold yellow]澄清轮次 {state['clarification_round'] + 1}[/bold yellow]")
-    for q in questions:
-        answer = Prompt.ask(f"  [cyan]{q}[/cyan]")
-        answers.append(answer)
+    auto_mode = state.get("auto_mode", False)
+    answers: list[str] = []
+
+    if auto_mode:
+        from agent.prompts import AUTO_ANSWER_PROMPT
+
+        answer_context = json.dumps({
+            "requirements": state["requirements"],
+            "questions": questions,
+        }, ensure_ascii=False)
+
+        raw_answer = client.create_message(
+            system_prompts=[
+                {"type": "text", "text": SYSTEM_BASE, "cache_control": {"type": "ephemeral"}},
+                {"type": "text", "text": AUTO_ANSWER_PROMPT, "cache_control": {"type": "ephemeral"}},
+            ],
+            user_content=answer_context,
+            max_tokens=512,
+            node_name="clarify_auto_answer",
+        )
+        answer_stripped = re.sub(r"^```(?:json)?\s*", "", raw_answer.strip(), flags=re.IGNORECASE)
+        answer_stripped = re.sub(r"\s*```$", "", answer_stripped.strip())
+        try:
+            answers = json.loads(answer_stripped)
+        except json.JSONDecodeError:
+            match = re.search(r"\[.*\]", answer_stripped, re.DOTALL)
+            try:
+                answers = json.loads(match.group()) if match else [raw_answer]
+            except json.JSONDecodeError:
+                answers = [raw_answer]
+    else:
+        console.print(f"\n[bold yellow]澄清轮次 {state['clarification_round'] + 1}[/bold yellow]")
+        for q in questions:
+            answer = Prompt.ask(f"  [cyan]{q}[/cyan]")
+            answers.append(answer)
 
     output_dir: Path = state["output_dir"]
     output_dir.mkdir(parents=True, exist_ok=True)
     clarify_path = output_dir / "澄清记录.md"
     with open(clarify_path, "a", encoding="utf-8") as f:
         round_num = state["clarification_round"] + 1
-        f.write(f"\n## 澄清轮次 {round_num}\n\n")
+        mode_tag = " (auto)" if auto_mode else ""
+        f.write(f"\n## 澄清轮次 {round_num}{mode_tag}\n\n")
         for q, a in zip(questions, answers):
             f.write(f"**Q：** {q}\n\n**A：** {a}\n\n")
 
