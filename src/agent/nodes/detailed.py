@@ -19,6 +19,7 @@ def detailed_design(state: AgentState) -> dict:
         ],
         user_content=hl_content or "根据总体设计生成详细设计",
         max_tokens=8192,
+        node_name="detail",
     )
 
     output_dir: Path = state["output_dir"]

@@ -1,4 +1,5 @@
 """Tests for LLMClient — unified Anthropic/OpenAI wrapper."""
+import json
 import os
 from unittest.mock import MagicMock, patch
 from agent.config import get_llm_client, LLMClient
@@ -173,3 +174,36 @@ class TestLLMClientCreateMessage:
         )
         call_kwargs = mock_client.messages.create.call_args.kwargs
         assert call_kwargs["system"] == [{"type": "text", "text": "simple prompt"}]
+
+
+def test_create_message_logs_trace(tmp_path):
+    """create_message writes a trace entry when logger is initialized."""
+    from agent.logger import init_logs
+
+    init_logs(tmp_path)
+
+    with patch.dict(os.environ, {"ANTHROPIC_API_KEY": "sk-test-key"}, clear=True):
+        os.environ.pop("ANTHROPIC_BASE_URL", None)
+        os.environ.pop("LLM_PROVIDER", None)
+
+        with patch("agent.config.anthropic.Anthropic") as mock_anthropic:
+            mock_client = MagicMock()
+            mock_anthropic.return_value = mock_client
+            mock_response = MagicMock()
+            mock_response.content = [MagicMock(text="traced response")]
+            mock_client.messages.create.return_value = mock_response
+
+            client = get_llm_client()
+            client.create_message(
+                system_prompts=[{"type": "text", "text": "test prompt"}],
+                user_content="test input",
+                max_tokens=100,
+                node_name="test_node",
+            )
+
+    trace_content = (tmp_path / "trace.log").read_text()
+    assert "test_node" in trace_content
+    assert "traced response" in trace_content
+    entry = json.loads(trace_content.strip().split("\n")[0])
+    assert entry["node"] == "test_node"
+    assert entry["provider"] == "anthropic"

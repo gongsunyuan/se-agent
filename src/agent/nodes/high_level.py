@@ -19,6 +19,7 @@ def high_level_design(state: AgentState) -> dict:
         ],
         user_content=req_content or "根据已知需求生成总体设计",
         max_tokens=4096,
+        node_name="high_level",
     )
 
     output_dir: Path = state["output_dir"]

@@ -17,6 +17,7 @@ def generate_req_doc(state: AgentState) -> dict:
         ],
         user_content=context,
         max_tokens=4096,
+        node_name="gen_req_doc",
     )
 
     output_dir: Path = state["output_dir"]

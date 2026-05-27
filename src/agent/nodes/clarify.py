@@ -23,6 +23,7 @@ def clarify(state: AgentState) -> dict:
         ],
         user_content=context,
         max_tokens=512,
+        node_name="clarify",
     )
     stripped = re.sub(r"^```(?:json)?\s*", "", raw.strip(), flags=re.IGNORECASE)
     stripped = re.sub(r"\s*```$", "", stripped.strip())

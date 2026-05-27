@@ -22,6 +22,7 @@ def judge(state: AgentState) -> dict:
         ],
         user_content=reqs_text,
         max_tokens=256,
+        node_name="judge",
     )
     stripped = re.sub(r"^```(?:json)?\s*", "", raw.strip(), flags=re.IGNORECASE)
     stripped = re.sub(r"\s*```$", "", stripped.strip())

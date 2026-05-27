@@ -1,4 +1,5 @@
 # src/agent/config.py
+import json
 import os
 from dotenv import load_dotenv
 import anthropic
@@ -62,6 +63,7 @@ class LLMClient:
         system_prompts: list[dict],
         user_content: str,
         max_tokens: int = 2048,
+        node_name: str = "",
     ) -> str:
         """发送消息并返回模型响应文本。
 
@@ -69,10 +71,13 @@ class LLMClient:
             system_prompts: system prompt 块列表，每块 {"type": "text", "text": "...", "cache_control": ...}
             user_content: 用户消息内容
             max_tokens: 最大输出 token 数
+            node_name: 调用节点名称，用于 trace 日志
 
         Returns:
             模型响应文本
         """
+        from agent.logger import log_trace
+
         if self.provider == "openai":
             messages: list[dict] = []
             for block in system_prompts:
@@ -84,7 +89,7 @@ class LLMClient:
                 max_completion_tokens=max_tokens,
                 messages=messages,
             )
-            return response.choices[0].message.content or ""
+            text = response.choices[0].message.content or ""
         else:
             response = self._client.messages.create(
                 model=self.model_id,
@@ -92,7 +97,21 @@ class LLMClient:
                 system=system_prompts,
                 messages=[{"role": "user", "content": user_content}],
             )
-            return response.content[0].text
+            text = response.content[0].text
+
+        log_trace({
+            "node": node_name,
+            "provider": self.provider,
+            "model": self.model_id,
+            "system_prompts": json.dumps(
+                [{"type": b.get("type"), "text": b["text"]} for b in system_prompts],
+                ensure_ascii=False,
+            ),
+            "user_content": user_content,
+            "response": text,
+            "max_tokens": max_tokens,
+        })
+        return text
 
 
 def _auto_detect_provider(base_url: str | None) -> str:

@@ -24,6 +24,7 @@ def process_requirement(state: AgentState) -> dict:
         ],
         user_content=user_content,
         max_tokens=2048,
+        node_name="process",
     )
     # 剥离 markdown 代码块包装（```json ... ``` 或 ``` ... ```）
     stripped = re.sub(r"^```(?:json)?\s*", "", raw.strip(), flags=re.IGNORECASE)
