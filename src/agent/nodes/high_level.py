@@ -3,6 +3,7 @@ from pathlib import Path
 from agent.state import AgentState
 from agent.config import get_llm_client
 from agent.prompts import SYSTEM_BASE, HIGH_LEVEL_PROMPT
+from agent.logger import log_execution
 
 
 def high_level_design(state: AgentState) -> dict:
@@ -26,5 +27,12 @@ def high_level_design(state: AgentState) -> dict:
     output_dir.mkdir(parents=True, exist_ok=True)
     doc_path = output_dir / "总体设计.md"
     doc_path.write_text(content, encoding="utf-8")
+
+    log_execution(
+        "high_level",
+        input_summary=f"req_doc={state.get('req_doc_path', 'N/A')}",
+        decision="generated high-level design document",
+        output_summary=f"doc={doc_path}",
+    )
 
     return {"high_level_doc_path": str(doc_path)}

@@ -4,12 +4,19 @@ import re
 from agent.state import AgentState
 from agent.config import get_llm_client
 from agent.prompts import SYSTEM_BASE, JUDGE_PROMPT
+from agent.logger import log_execution
 
 
 def judge(state: AgentState) -> dict:
     reqs = state["requirements"]
     # Rule-based fast path: 有 functioal 且无 open_questions 直接放行
     if reqs.get("functional") and not reqs.get("open_questions"):
+        log_execution(
+            "judge",
+            input_summary=f"functional={len(state['requirements'].get('functional', []))}, open_questions={len(state['requirements'].get('open_questions', []))}",
+            decision=f"is_clear=True",
+            output_summary=f"is_clear=True",
+        )
         return {"is_clear": True}
 
     client = get_llm_client()
@@ -34,5 +41,12 @@ def judge(state: AgentState) -> dict:
             result = json.loads(match.group()) if match else {"is_clear": False}
         except json.JSONDecodeError:
             result = {"is_clear": False}
+
+    log_execution(
+        "judge",
+        input_summary=f"functional={len(state['requirements'].get('functional', []))}, open_questions={len(state['requirements'].get('open_questions', []))}",
+        decision=f"is_clear={result.get('is_clear', False)}",
+        output_summary=f"is_clear={result.get('is_clear', False)}",
+    )
 
     return {"is_clear": result.get("is_clear", False)}

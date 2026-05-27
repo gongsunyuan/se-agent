@@ -4,6 +4,7 @@ import re
 from agent.state import AgentState
 from agent.config import get_llm_client
 from agent.prompts import SYSTEM_BASE, PROCESS_PROMPT
+from agent.logger import log_execution
 
 
 def process_requirement(state: AgentState) -> dict:
@@ -37,5 +38,12 @@ def process_requirement(state: AgentState) -> dict:
             reqs = json.loads(match.group()) if match else {}
         except json.JSONDecodeError:
             reqs = {}
+
+    log_execution(
+        "process",
+        input_summary=f"input={state['raw_input'][:60]}, prev_answers={len(state.get('user_answers', []))}",
+        decision=f"extracted {len(reqs.get('functional', []))} functional, {len(reqs.get('open_questions', []))} open_questions",
+        output_summary=f"req keys={list(reqs.keys())}",
+    )
 
     return {"requirements": reqs, "messages": state["messages"] + [{"role": "assistant", "content": raw}]}

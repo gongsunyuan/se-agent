@@ -5,6 +5,7 @@ from pathlib import Path
 from agent.state import AgentState
 from agent.config import get_llm_client
 from agent.prompts import SYSTEM_BASE, CLARIFY_PROMPT
+from agent.logger import log_execution
 from rich.console import Console
 from rich.prompt import Prompt
 
@@ -81,6 +82,13 @@ def clarify(state: AgentState) -> dict:
         f.write(f"\n## 澄清轮次 {round_num}{mode_tag}\n\n")
         for q, a in zip(questions, answers):
             f.write(f"**Q：** {q}\n\n**A：** {a}\n\n")
+
+    log_execution(
+        "clarify",
+        input_summary=f"round={state['clarification_round'] + 1}, open_qs={len(open_qs)}",
+        decision=f"generated {len(questions)} questions{' (auto-answered)' if auto_mode else ''}",
+        output_summary=f"answers={len(answers)}, next_round={state['clarification_round'] + 2}",
+    )
 
     return {
         "clarification_round": state["clarification_round"] + 1,
