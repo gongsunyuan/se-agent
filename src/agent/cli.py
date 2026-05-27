@@ -74,7 +74,6 @@ def run(
                 console.print(Path(doc_path).read_text(encoding="utf-8")[:500] + "...")
             confirm = typer.confirm("\n确认需求文档并继续？")
             comment = None if confirm else typer.prompt("请输入修改意见")
-            graph.update_state(config, {}, as_node="checkpoint_a")
             for _ in graph.stream(
                 Command(resume={"confirmed": confirm, "comment": comment}),
                 config=config, stream_mode="values",
