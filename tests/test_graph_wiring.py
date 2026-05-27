@@ -20,7 +20,7 @@ def test_graph_has_expected_nodes():
 
 def test_graph_auto_mode_skips_checkpoints():
     """Auto mode graph: gen_req_doc routes to high_level, high_level routes to detail."""
-    graph = build_graph(use_memory=False, auto_mode=True)
+    graph = build_graph(use_memory=False)
     nodes = set(graph.get_graph().nodes.keys())
     # Checkpoints are still in the graph (they exist as nodes)
     assert "checkpoint_a" in nodes

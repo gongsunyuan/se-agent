@@ -39,7 +39,7 @@ def _route_after_high_level(state: AgentState) -> str:
     return "skip_checkpoint" if state.get("auto_mode", False) else "to_checkpoint"
 
 
-def build_graph(use_memory: bool = True, auto_mode: bool = False):
+def build_graph(use_memory: bool = True):
     g = StateGraph(AgentState)
 
     g.add_node("process",      process_requirement)

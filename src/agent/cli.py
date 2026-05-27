@@ -37,7 +37,7 @@ def run(
     if auto_mode:
         console.print("[dim]全自动模式：无需用户交互，所有决策由 LLM 自动完成[/dim]")
 
-    graph = build_graph(use_memory=True, auto_mode=auto_mode)
+    graph = build_graph(use_memory=True)
     config = {"configurable": {"thread_id": thread_id}}
 
     initial_state: AgentState = {
