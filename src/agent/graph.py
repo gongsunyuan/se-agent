@@ -29,7 +29,17 @@ def _route_checkpoint_b(state: AgentState) -> str:
     return "ok" if state["high_level_confirmed"] else "revise"
 
 
-def build_graph(use_memory: bool = True):
+def _route_after_gen_req(state: AgentState) -> str:
+    """auto 模式跳过 checkpoint_a 直通 high_level。"""
+    return "skip_checkpoint" if state.get("auto_mode", False) else "to_checkpoint"
+
+
+def _route_after_high_level(state: AgentState) -> str:
+    """auto 模式跳过 checkpoint_b 直通 detail。"""
+    return "skip_checkpoint" if state.get("auto_mode", False) else "to_checkpoint"
+
+
+def build_graph(use_memory: bool = True, auto_mode: bool = False):
     g = StateGraph(AgentState)
 
     g.add_node("process",      process_requirement)
@@ -49,13 +59,21 @@ def build_graph(use_memory: bool = True):
         {"ok": "gen_req_doc", "clarify": "clarify"},
     )
     g.add_edge("clarify", "process")
-    g.add_edge("gen_req_doc", "checkpoint_a")
+    g.add_conditional_edges(
+        "gen_req_doc",
+        _route_after_gen_req,
+        {"skip_checkpoint": "high_level", "to_checkpoint": "checkpoint_a"},
+    )
     g.add_conditional_edges(
         "checkpoint_a",
         _route_checkpoint_a,
         {"ok": "high_level", "revise": "process"},
     )
-    g.add_edge("high_level", "checkpoint_b")
+    g.add_conditional_edges(
+        "high_level",
+        _route_after_high_level,
+        {"skip_checkpoint": "detail", "to_checkpoint": "checkpoint_b"},
+    )
     g.add_conditional_edges(
         "checkpoint_b",
         _route_checkpoint_b,
