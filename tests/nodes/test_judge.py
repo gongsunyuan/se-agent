@@ -23,14 +23,12 @@ def test_judge_clear_fastpath():
     result = judge(_make_state())
     assert result["is_clear"] is True
 
-@patch("agent.config.anthropic.Anthropic")
-def test_judge_llm_path_when_open_questions(mock_client_class):
+@patch("agent.nodes.judge.get_llm_client")
+def test_judge_llm_path_when_open_questions(mock_get_client):
     """有 open_questions 时走 LLM 路径"""
     mock_client = MagicMock()
-    mock_client_class.return_value = mock_client
-    mock_response = MagicMock()
-    mock_response.content = [MagicMock(text='{"is_clear": true, "reason": "需求完整"}')]
-    mock_client.messages.create.return_value = mock_response
+    mock_client.create_message.return_value = '{"is_clear": true, "reason": "需求完整"}'
+    mock_get_client.return_value = mock_client
 
     state = _make_state()
     state["requirements"]["open_questions"] = ["需要明确用户角色"]

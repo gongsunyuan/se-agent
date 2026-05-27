@@ -17,13 +17,11 @@ def _make_state(tmp_path) -> AgentState:
         "messages": [], "errors": [],
     }
 
-@patch("agent.config.anthropic.Anthropic")
-def test_gen_req_doc_writes_file(mock_client_class, tmp_path):
+@patch("agent.nodes.gen_req_doc.get_llm_client")
+def test_gen_req_doc_writes_file(mock_get_client, tmp_path):
     mock_client = MagicMock()
-    mock_client_class.return_value = mock_client
-    mock_response = MagicMock()
-    mock_response.content = [MagicMock(text="# 需求说明书\n\n## 1. 项目概述\n测试项目")]
-    mock_client.messages.create.return_value = mock_response
+    mock_client.create_message.return_value = "# 需求说明书\n\n## 1. 项目概述\n测试项目"
+    mock_get_client.return_value = mock_client
 
     result = generate_req_doc(_make_state(tmp_path))
     assert result["req_doc_path"] is not None

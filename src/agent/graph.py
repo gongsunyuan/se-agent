@@ -1,4 +1,5 @@
 # src/agent/graph.py
+import sqlite3
 from langgraph.graph import StateGraph, END
 from langgraph.checkpoint.sqlite import SqliteSaver
 
@@ -63,6 +64,9 @@ def build_graph(use_memory: bool = True):
     g.add_edge("detail", END)
 
     if use_memory:
-        checkpointer = SqliteSaver.from_conn_string("outputs/checkpoints.db")
+        from pathlib import Path
+        Path("outputs").mkdir(parents=True, exist_ok=True)
+        conn = sqlite3.connect("outputs/checkpoints.db", check_same_thread=False)
+        checkpointer = SqliteSaver(conn)
         return g.compile(checkpointer=checkpointer)
     return g.compile()
