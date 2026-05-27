@@ -22,6 +22,7 @@ def run(
     output_dir: Path = typer.Option(Path("outputs") / str(uuid.uuid4())[:8], help="输出目录"),
     max_rounds: int = typer.Option(5, help="最大澄清轮次"),
     thread_id: str = typer.Option(str(uuid.uuid4()), help="会话 ID（用于断点续跑）"),
+    auto_mode: bool = typer.Option(False, "--auto", "--auto-mode", help="全自动模式，无需用户交互"),
 ):
     """运行需求分析 + 软件设计 Agent"""
     if not os.getenv("ANTHROPIC_API_KEY"):
@@ -29,13 +30,19 @@ def run(
         raise typer.Exit(1)
 
     output_dir.mkdir(parents=True, exist_ok=True)
+    from agent.logger import init_logs
+    init_logs(output_dir)
     console.print(Panel(f"[bold green]SE Agent 启动[/bold green]\n输出目录: {output_dir}\n会话 ID: {thread_id}"))
 
-    graph = build_graph(use_memory=True)
+    if auto_mode:
+        console.print("[dim]全自动模式：无需用户交互，所有决策由 LLM 自动完成[/dim]")
+
+    graph = build_graph(use_memory=True, auto_mode=auto_mode)
     config = {"configurable": {"thread_id": thread_id}}
 
     initial_state: AgentState = {
         "raw_input": input_text,
+        "auto_mode": auto_mode,
         "requirements": {},
         "clarification_round": 0,
         "max_clarification_rounds": max_rounds,
@@ -57,7 +64,7 @@ def run(
         pass
 
     # 处理 interrupt 的 resume 逻辑
-    while True:
+    while not auto_mode:
         state = graph.get_state(config)
         if not state.next:
             break
