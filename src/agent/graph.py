@@ -83,8 +83,10 @@ def build_graph(use_memory: bool = True):
 
     if use_memory:
         from pathlib import Path
-        Path("outputs").mkdir(parents=True, exist_ok=True)
-        conn = sqlite3.connect("outputs/checkpoints.db", check_same_thread=False)
+        _project_root = Path(__file__).resolve().parent.parent.parent
+        _outputs_dir = _project_root / "outputs"
+        _outputs_dir.mkdir(parents=True, exist_ok=True)
+        conn = sqlite3.connect(str(_outputs_dir / "checkpoints.db"), check_same_thread=False)
         checkpointer = SqliteSaver(conn)
         return g.compile(checkpointer=checkpointer)
     return g.compile()

@@ -294,7 +294,7 @@ def main() -> None:
         console.print("[red]错误: 请设置 ANTHROPIC_API_KEY 环境变量[/red]")
         sys.exit(1)
 
-    output_dir = args.output_dir or Path("outputs") / str(uuid.uuid4())[:8]
+    output_dir = args.output_dir or Path(__file__).resolve().parent.parent / "outputs" / str(uuid.uuid4())[:8]
     thread_id = args.thread_id or str(uuid.uuid4())
 
     run_auto_test(
