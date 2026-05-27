@@ -1,0 +1,1527 @@
+{
+  "version": "1.0.0",
+  "gitCommitHash": "78e36ead2e85b3fd6f29050f4b0e8d1730d38cf6",
+  "generatedAt": "2026-05-27T11:07:23.537Z",
+  "files": {
+    ".env.example": {
+      "filePath": ".env.example",
+      "contentHash": "3d84ed35d94a004830b3c177d668abc8ce11225c0657be99e13c609c4479d146",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 9,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/.understandignore": {
+      "filePath": ".understand-anything/.understandignore",
+      "contentHash": "edfbb21571d5904c45b1532510216540a5526e2413fc60744025b008290719e2",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 31,
+      "hasStructuralAnalysis": false
+    },
+    "pyproject.toml": {
+      "filePath": "pyproject.toml",
+      "contentHash": "88405f220cdfb9b949f4818c8c2c2f107a979064d40934ebd29697ba06daee16",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 33,
+      "hasStructuralAnalysis": true
+    },
+    "README.md": {
+      "filePath": "README.md",
+      "contentHash": "3e25d5931b0e0a0763ce056d4b7dfc7ccb23f3ebbaaffaccaaa9a470464e61cc",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 258,
+      "hasStructuralAnalysis": true
+    },
+    "run_test.py": {
+      "filePath": "run_test.py",
+      "contentHash": "0d2a84d08385be8aeac9f028ad2c8bbc2982a3870892c6d5c705f915a10a1f85",
+      "functions": [
+        {
+          "name": "run_agent",
+          "params": [
+            "input_text",
+            "output_dir",
+            "max_rounds"
+          ],
+          "exported": true,
+          "lineCount": 95
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "uuid",
+          "specifiers": [
+            "uuid"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "dotenv",
+          "specifiers": [
+            "load_dotenv"
+          ]
+        },
+        {
+          "source": "agent.graph",
+          "specifiers": [
+            "build_graph"
+          ]
+        },
+        {
+          "source": "agent.state",
+          "specifiers": [
+            "AgentState"
+          ]
+        },
+        {
+          "source": "langgraph.types",
+          "specifiers": [
+            "Command"
+          ]
+        }
+      ],
+      "exports": [
+        "run_agent"
+      ],
+      "totalLines": 117,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/auto_test.py": {
+      "filePath": "scripts/auto_test.py",
+      "contentHash": "1113327157cecc0d823bc018479ec96fa855529873f799b8b88bdbbaf962dd9b",
+      "functions": [
+        {
+          "name": "_extract_json",
+          "params": [
+            "raw"
+          ],
+          "returnType": "dict | list",
+          "exported": true,
+          "lineCount": 18
+        },
+        {
+          "name": "review_document",
+          "params": [
+            "doc_path"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 16
+        },
+        {
+          "name": "answer_question",
+          "params": [
+            "question"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "_strip_rich_markup",
+          "params": [
+            "text"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "run_auto_test",
+          "params": [
+            "input_text",
+            "mode",
+            "output_dir",
+            "max_rounds",
+            "thread_id"
+          ],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 140
+        },
+        {
+          "name": "main",
+          "params": [],
+          "returnType": "None",
+          "exported": true,
+          "lineCount": 40
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "argparse",
+          "specifiers": [
+            "argparse"
+          ]
+        },
+        {
+          "source": "json",
+          "specifiers": [
+            "json"
+          ]
+        },
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "re",
+          "specifiers": [
+            "re"
+          ]
+        },
+        {
+          "source": "uuid",
+          "specifiers": [
+            "uuid"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "unittest.mock",
+          "specifiers": [
+            "patch"
+          ]
+        },
+        {
+          "source": "sys",
+          "specifiers": [
+            "sys"
+          ]
+        },
+        {
+          "source": "dotenv",
+          "specifiers": [
+            "load_dotenv"
+          ]
+        },
+        {
+          "source": "rich.console",
+          "specifiers": [
+            "Console"
+          ]
+        },
+        {
+          "source": "rich.panel",
+          "specifiers": [
+            "Panel"
+          ]
+        },
+        {
+          "source": "langgraph.types",
+          "specifiers": [
+            "Command"
+          ]
+        },
+        {
+          "source": "agent.graph",
+          "specifiers": [
+            "build_graph"
+          ]
+        },
+        {
+          "source": "agent.state",
+          "specifiers": [
+            "AgentState"
+          ]
+        },
+        {
+          "source": "agent.config",
+          "specifiers": [
+            "get_llm_client"
+          ]
+        }
+      ],
+      "exports": [
+        "_extract_json",
+        "review_document",
+        "answer_question",
+        "_strip_rich_markup",
+        "run_auto_test",
+        "main"
+      ],
+      "totalLines": 311,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/export_pdf.py": {
+      "filePath": "scripts/export_pdf.py",
+      "contentHash": "ce3f40e8fdb1803f847d6af24d9242c6a1242453e87ae861d533df0813bda8b1",
+      "functions": [
+        {
+          "name": "_find_pandoc",
+          "params": [],
+          "returnType": "str | None",
+          "exported": true,
+          "lineCount": 14
+        },
+        {
+          "name": "_detect_cjk_font",
+          "params": [],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 22
+        },
+        {
+          "name": "check_pandoc",
+          "params": [],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "_build_env",
+          "params": [],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 29
+        },
+        {
+          "name": "export_docs",
+          "params": [
+            "output_dir"
+          ],
+          "returnType": "list[Path]",
+          "exported": true,
+          "lineCount": 46
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "subprocess",
+          "specifiers": [
+            "subprocess"
+          ]
+        },
+        {
+          "source": "sys",
+          "specifiers": [
+            "sys"
+          ]
+        },
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "shutil",
+          "specifiers": [
+            "shutil"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        }
+      ],
+      "exports": [
+        "_find_pandoc",
+        "_detect_cjk_font",
+        "check_pandoc",
+        "_build_env",
+        "export_docs"
+      ],
+      "totalLines": 155,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/export_pdf.sh": {
+      "filePath": "scripts/export_pdf.sh",
+      "contentHash": "ce184893a2290269084851897c33c9172df2e37dad6502e213641a5b384b2e2e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 45,
+      "hasStructuralAnalysis": true
+    },
+    "src/agent/__init__.py": {
+      "filePath": "src/agent/__init__.py",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    "src/agent/cli.py": {
+      "filePath": "src/agent/cli.py",
+      "contentHash": "8fb11b90f6cd85c424df873b61714eb1e5f9d70f612e59134b7f427a21661a75",
+      "functions": [
+        {
+          "name": "run",
+          "params": [
+            "input_text",
+            "output_dir",
+            "max_rounds",
+            "thread_id"
+          ],
+          "exported": true,
+          "lineCount": 80
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "uuid",
+          "specifiers": [
+            "uuid"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "dotenv",
+          "specifiers": [
+            "load_dotenv"
+          ]
+        },
+        {
+          "source": "typer",
+          "specifiers": [
+            "typer"
+          ]
+        },
+        {
+          "source": "rich.console",
+          "specifiers": [
+            "Console"
+          ]
+        },
+        {
+          "source": "rich.panel",
+          "specifiers": [
+            "Panel"
+          ]
+        },
+        {
+          "source": "langgraph.types",
+          "specifiers": [
+            "Command"
+          ]
+        },
+        {
+          "source": "agent.graph",
+          "specifiers": [
+            "build_graph"
+          ]
+        },
+        {
+          "source": "agent.state",
+          "specifiers": [
+            "AgentState"
+          ]
+        }
+      ],
+      "exports": [
+        "run"
+      ],
+      "totalLines": 104,
+      "hasStructuralAnalysis": true
+    },
+    "src/agent/config.py": {
+      "filePath": "src/agent/config.py",
+      "contentHash": "4d3bb537b5380069702c7a81d3cf4c95e7cac7b752bc39f609f7162991cc0961",
+      "functions": [
+        {
+          "name": "get_llm_config",
+          "params": [],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "get_client",
+          "params": [],
+          "returnType": "anthropic.Anthropic",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "_auto_detect_provider",
+          "params": [
+            "base_url"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "get_llm_client",
+          "params": [],
+          "returnType": "LLMClient",
+          "exported": true,
+          "lineCount": 18
+        }
+      ],
+      "classes": [
+        {
+          "name": "LLMClient",
+          "methods": [
+            "__init__",
+            "create_message"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 65
+        }
+      ],
+      "imports": [
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "dotenv",
+          "specifiers": [
+            "load_dotenv"
+          ]
+        },
+        {
+          "source": "anthropic",
+          "specifiers": [
+            "anthropic"
+          ]
+        },
+        {
+          "source": "openai",
+          "specifiers": [
+            "openai"
+          ]
+        }
+      ],
+      "exports": [
+        "get_llm_config",
+        "get_client",
+        "LLMClient",
+        "_auto_detect_provider",
+        "get_llm_client"
+      ],
+      "totalLines": 123,
+      "hasStructuralAnalysis": true
+    },
+    "src/agent/graph.py": {
+      "filePath": "src/agent/graph.py",
+      "contentHash": "2a38185ad119b6370a14241fcac5b39d04fa276a5d5bd6937165be7f829e352b",
+      "functions": [
+        {
+          "name": "_route_judge",
+          "params": [
+            "state"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "_route_checkpoint_a",
+          "params": [
+            "state"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "_route_checkpoint_b",
+          "params": [
+            "state"
+          ],
+          "returnType": "str",
+          "exported": true,
+          "lineCount": 2
+        },
+        {
+          "name": "build_graph",
+          "params": [
+            "use_memory"
+          ],
+          "exported": true,
+          "lineCount": 41
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "sqlite3",
+          "specifiers": [
+            "sqlite3"
+          ]
+        },
+        {
+          "source": "langgraph.graph",
+          "specifiers": [
+            "StateGraph",
+            "END"
+          ]
+        },
+        {
+          "source": "langgraph.checkpoint.sqlite",
+          "specifiers": [
+            "SqliteSaver"
+          ]
+        },
+        {
+          "source": "agent.state",
+          "specifiers": [
+            "AgentState"
+          ]
+        },
+        {
+          "source": "agent.nodes.process",
+          "specifiers": [
+            "process_requirement"
+          ]
+        },
+        {
+          "source": "agent.nodes.judge",
+          "specifiers": [
+            "judge"
+          ]
+        },
+        {
+          "source": "agent.nodes.clarify",
+          "specifiers": [
+            "clarify"
+          ]
+        },
+        {
+          "source": "agent.nodes.gen_req_doc",
+          "specifiers": [
+            "generate_req_doc"
+          ]
+        },
+        {
+          "source": "agent.nodes.checkpoints",
+          "specifiers": [
+            "checkpoint_req_doc",
+            "checkpoint_high_level"
+          ]
+        },
+        {
+          "source": "agent.nodes.high_level",
+          "specifiers": [
+            "high_level_design"
+          ]
+        },
+        {
+          "source": "agent.nodes.detailed",
+          "specifiers": [
+            "detailed_design"
+          ]
+        }
+      ],
+      "exports": [
+        "_route_judge",
+        "_route_checkpoint_a",
+        "_route_checkpoint_b",
+        "build_graph"
+      ],
+      "totalLines": 73,
+      "hasStructuralAnalysis": true
+    },
+    "src/agent/nodes/__init__.py": {
+      "filePath": "src/agent/nodes/__init__.py",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    "src/agent/nodes/checkpoints.py": {
+      "filePath": "src/agent/nodes/checkpoints.py",
+      "contentHash": "a935c2319f53f03f37a352106e7a26b4a5f2d4e999c3254d6a09aa778b085f73",
+      "functions": [
+        {
+          "name": "checkpoint_req_doc",
+          "params": [
+            "state"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "checkpoint_high_level",
+          "params": [
+            "state"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 8
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "langgraph.types",
+          "specifiers": [
+            "interrupt"
+          ]
+        },
+        {
+          "source": "agent.state",
+          "specifiers": [
+            "AgentState"
+          ]
+        }
+      ],
+      "exports": [
+        "checkpoint_req_doc",
+        "checkpoint_high_level"
+      ],
+      "totalLines": 22,
+      "hasStructuralAnalysis": true
+    },
+    "src/agent/nodes/clarify.py": {
+      "filePath": "src/agent/nodes/clarify.py",
+      "contentHash": "fa0cb0897b19d484fbf0d4d018d3545f438936b0a7bbd2284f2040a25b13ad58",
+      "functions": [
+        {
+          "name": "clarify",
+          "params": [
+            "state"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 44
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "json",
+          "specifiers": [
+            "json"
+          ]
+        },
+        {
+          "source": "re",
+          "specifiers": [
+            "re"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "agent.state",
+          "specifiers": [
+            "AgentState"
+          ]
+        },
+        {
+          "source": "agent.config",
+          "specifiers": [
+            "get_llm_client"
+          ]
+        },
+        {
+          "source": "agent.prompts",
+          "specifiers": [
+            "SYSTEM_BASE",
+            "CLARIFY_PROMPT"
+          ]
+        },
+        {
+          "source": "rich.console",
+          "specifiers": [
+            "Console"
+          ]
+        },
+        {
+          "source": "rich.prompt",
+          "specifiers": [
+            "Prompt"
+          ]
+        }
+      ],
+      "exports": [
+        "clarify"
+      ],
+      "totalLines": 58,
+      "hasStructuralAnalysis": true
+    },
+    "src/agent/nodes/detailed.py": {
+      "filePath": "src/agent/nodes/detailed.py",
+      "contentHash": "518821fd89e5d30adcbe9ddfa4664d09420e8a91e47c1b1cd3b78642fca161b2",
+      "functions": [
+        {
+          "name": "detailed_design",
+          "params": [
+            "state"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 22
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "agent.state",
+          "specifiers": [
+            "AgentState"
+          ]
+        },
+        {
+          "source": "agent.config",
+          "specifiers": [
+            "get_llm_client"
+          ]
+        },
+        {
+          "source": "agent.prompts",
+          "specifiers": [
+            "SYSTEM_BASE",
+            "DETAIL_PROMPT"
+          ]
+        }
+      ],
+      "exports": [
+        "detailed_design"
+      ],
+      "totalLines": 30,
+      "hasStructuralAnalysis": true
+    },
+    "src/agent/nodes/gen_req_doc.py": {
+      "filePath": "src/agent/nodes/gen_req_doc.py",
+      "contentHash": "fadea02f65a4b4a6c2cfcf61d022b441d11702e618560eeac118d70600fe81e8",
+      "functions": [
+        {
+          "name": "generate_req_doc",
+          "params": [
+            "state"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 19
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "json",
+          "specifiers": [
+            "json"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "agent.state",
+          "specifiers": [
+            "AgentState"
+          ]
+        },
+        {
+          "source": "agent.config",
+          "specifiers": [
+            "get_llm_client"
+          ]
+        },
+        {
+          "source": "agent.prompts",
+          "specifiers": [
+            "SYSTEM_BASE",
+            "REQ_DOC_PROMPT"
+          ]
+        }
+      ],
+      "exports": [
+        "generate_req_doc"
+      ],
+      "totalLines": 28,
+      "hasStructuralAnalysis": true
+    },
+    "src/agent/nodes/high_level.py": {
+      "filePath": "src/agent/nodes/high_level.py",
+      "contentHash": "6a9e9fef221746c966afe4b8d42c066c4546d5f1d373160153c5a789e6b47142",
+      "functions": [
+        {
+          "name": "high_level_design",
+          "params": [
+            "state"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 22
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "agent.state",
+          "specifiers": [
+            "AgentState"
+          ]
+        },
+        {
+          "source": "agent.config",
+          "specifiers": [
+            "get_llm_client"
+          ]
+        },
+        {
+          "source": "agent.prompts",
+          "specifiers": [
+            "SYSTEM_BASE",
+            "HIGH_LEVEL_PROMPT"
+          ]
+        }
+      ],
+      "exports": [
+        "high_level_design"
+      ],
+      "totalLines": 30,
+      "hasStructuralAnalysis": true
+    },
+    "src/agent/nodes/judge.py": {
+      "filePath": "src/agent/nodes/judge.py",
+      "contentHash": "29c1b64d8019e04ff8e6a24b678acb4cbea5bc2db5ff4cd6ad5ee0601434a25c",
+      "functions": [
+        {
+          "name": "judge",
+          "params": [
+            "state"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 29
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "json",
+          "specifiers": [
+            "json"
+          ]
+        },
+        {
+          "source": "re",
+          "specifiers": [
+            "re"
+          ]
+        },
+        {
+          "source": "agent.state",
+          "specifiers": [
+            "AgentState"
+          ]
+        },
+        {
+          "source": "agent.config",
+          "specifiers": [
+            "get_llm_client"
+          ]
+        },
+        {
+          "source": "agent.prompts",
+          "specifiers": [
+            "SYSTEM_BASE",
+            "JUDGE_PROMPT"
+          ]
+        }
+      ],
+      "exports": [
+        "judge"
+      ],
+      "totalLines": 38,
+      "hasStructuralAnalysis": true
+    },
+    "src/agent/nodes/process.py": {
+      "filePath": "src/agent/nodes/process.py",
+      "contentHash": "73027dcca4f2ed2500a0ed6e4c88b29fd9796a5aefb16b40790587b3ec442e9e",
+      "functions": [
+        {
+          "name": "process_requirement",
+          "params": [
+            "state"
+          ],
+          "returnType": "dict",
+          "exported": true,
+          "lineCount": 32
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "json",
+          "specifiers": [
+            "json"
+          ]
+        },
+        {
+          "source": "re",
+          "specifiers": [
+            "re"
+          ]
+        },
+        {
+          "source": "agent.state",
+          "specifiers": [
+            "AgentState"
+          ]
+        },
+        {
+          "source": "agent.config",
+          "specifiers": [
+            "get_llm_client"
+          ]
+        },
+        {
+          "source": "agent.prompts",
+          "specifiers": [
+            "SYSTEM_BASE",
+            "PROCESS_PROMPT"
+          ]
+        }
+      ],
+      "exports": [
+        "process_requirement"
+      ],
+      "totalLines": 41,
+      "hasStructuralAnalysis": true
+    },
+    "src/agent/prompts.py": {
+      "filePath": "src/agent/prompts.py",
+      "contentHash": "118f35db752044444a98bcb51a547e0aa39416e6899daf23ead1a65565a86a88",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 53,
+      "hasStructuralAnalysis": true
+    },
+    "src/agent/state.py": {
+      "filePath": "src/agent/state.py",
+      "contentHash": "65b80f725115045102be6b01b9a5be00264743596cba0bb44f9d035362ede9ae",
+      "functions": [],
+      "classes": [
+        {
+          "name": "Requirements",
+          "methods": [],
+          "properties": [
+            "functional",
+            "non_functional",
+            "actors",
+            "constraints",
+            "open_questions"
+          ],
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "AgentState",
+          "methods": [],
+          "properties": [
+            "raw_input",
+            "requirements",
+            "clarification_round",
+            "max_clarification_rounds",
+            "is_clear",
+            "clarify_questions",
+            "user_answers",
+            "req_doc_confirmed",
+            "high_level_confirmed",
+            "revision_comment",
+            "output_dir",
+            "req_doc_path",
+            "high_level_doc_path",
+            "detail_doc_path",
+            "messages",
+            "errors"
+          ],
+          "exported": true,
+          "lineCount": 17
+        }
+      ],
+      "imports": [
+        {
+          "source": "typing",
+          "specifiers": [
+            "TypedDict",
+            "Optional"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        }
+      ],
+      "exports": [
+        "Requirements",
+        "AgentState"
+      ],
+      "totalLines": 31,
+      "hasStructuralAnalysis": true
+    },
+    "tests/__init__.py": {
+      "filePath": "tests/__init__.py",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    "tests/conftest.py": {
+      "filePath": "tests/conftest.py",
+      "contentHash": "00c90b05468307ac44a40a5837e186d6ab577f3c20acadb9160c2336dcc7f829",
+      "functions": [
+        {
+          "name": "setup_env",
+          "params": [],
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "tmp_output",
+          "params": [
+            "tmp_path"
+          ],
+          "returnType": "Path",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "base_state",
+          "params": [
+            "tmp_output"
+          ],
+          "exported": true,
+          "lineCount": 20
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "pytest",
+          "specifiers": [
+            "pytest"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        }
+      ],
+      "exports": [
+        "setup_env",
+        "tmp_output",
+        "base_state"
+      ],
+      "totalLines": 45,
+      "hasStructuralAnalysis": true
+    },
+    "tests/demo_se_agent.tmpl": {
+      "filePath": "tests/demo_se_agent.tmpl",
+      "contentHash": "b2261e012aa049770dc8c3bdac280f29cb20d51a401c068afd534b9ac862dbc9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 20,
+      "hasStructuralAnalysis": false
+    },
+    "tests/nodes/__init__.py": {
+      "filePath": "tests/nodes/__init__.py",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": true
+    },
+    "tests/nodes/test_gen_req_doc.py": {
+      "filePath": "tests/nodes/test_gen_req_doc.py",
+      "contentHash": "56d6878d927504e1765198d38ccbd3c6b987ebde0978aac264d7d14a6b8bc2e8",
+      "functions": [
+        {
+          "name": "_make_state",
+          "params": [
+            "tmp_path"
+          ],
+          "returnType": "AgentState",
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "test_gen_req_doc_writes_file",
+          "params": [
+            "mock_get_client",
+            "tmp_path"
+          ],
+          "exported": true,
+          "lineCount": 9
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "unittest.mock",
+          "specifiers": [
+            "MagicMock",
+            "patch"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "tempfile",
+          "specifiers": [
+            "tempfile"
+          ]
+        },
+        {
+          "source": "agent.nodes.gen_req_doc",
+          "specifiers": [
+            "generate_req_doc"
+          ]
+        },
+        {
+          "source": "agent.state",
+          "specifiers": [
+            "AgentState"
+          ]
+        }
+      ],
+      "exports": [
+        "_make_state",
+        "test_gen_req_doc_writes_file"
+      ],
+      "totalLines": 30,
+      "hasStructuralAnalysis": true
+    },
+    "tests/nodes/test_judge.py": {
+      "filePath": "tests/nodes/test_judge.py",
+      "contentHash": "7be58d948f739d36971ad2b6637f693f264f63b7f6dcf4f24445beacde1a27d1",
+      "functions": [
+        {
+          "name": "_make_state",
+          "params": [
+            "**kwargs"
+          ],
+          "returnType": "AgentState",
+          "exported": true,
+          "lineCount": 13
+        },
+        {
+          "name": "test_judge_clear_fastpath",
+          "params": [],
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "test_judge_llm_path_when_open_questions",
+          "params": [
+            "mock_get_client"
+          ],
+          "exported": true,
+          "lineCount": 10
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "unittest.mock",
+          "specifiers": [
+            "MagicMock",
+            "patch"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "agent.nodes.judge",
+          "specifiers": [
+            "judge"
+          ]
+        },
+        {
+          "source": "agent.state",
+          "specifiers": [
+            "AgentState"
+          ]
+        }
+      ],
+      "exports": [
+        "_make_state",
+        "test_judge_clear_fastpath",
+        "test_judge_llm_path_when_open_questions"
+      ],
+      "totalLines": 37,
+      "hasStructuralAnalysis": true
+    },
+    "tests/nodes/test_process.py": {
+      "filePath": "tests/nodes/test_process.py",
+      "contentHash": "141571e03dde37fab3cf31e942453894f0d0f4d205c762b9673fd8d9dd20c7cc",
+      "functions": [
+        {
+          "name": "_make_state",
+          "params": [
+            "**kwargs"
+          ],
+          "returnType": "AgentState",
+          "exported": true,
+          "lineCount": 21
+        },
+        {
+          "name": "test_process_returns_requirements",
+          "params": [
+            "mock_get_client"
+          ],
+          "exported": true,
+          "lineCount": 8
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "unittest.mock",
+          "specifiers": [
+            "MagicMock",
+            "patch"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "agent.nodes.process",
+          "specifiers": [
+            "process_requirement"
+          ]
+        },
+        {
+          "source": "agent.state",
+          "specifiers": [
+            "AgentState"
+          ]
+        }
+      ],
+      "exports": [
+        "_make_state",
+        "test_process_returns_requirements"
+      ],
+      "totalLines": 40,
+      "hasStructuralAnalysis": true
+    },
+    "tests/test_graph_wiring.py": {
+      "filePath": "tests/test_graph_wiring.py",
+      "contentHash": "a8141e75c1d7b852bba8358b367fd5026b8af1e6e0f0807534f3f331b690e10d",
+      "functions": [
+        {
+          "name": "test_graph_compiles",
+          "params": [],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "test_graph_has_expected_nodes",
+          "params": [],
+          "exported": true,
+          "lineCount": 10
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "agent.graph",
+          "specifiers": [
+            "build_graph"
+          ]
+        }
+      ],
+      "exports": [
+        "test_graph_compiles",
+        "test_graph_has_expected_nodes"
+      ],
+      "totalLines": 18,
+      "hasStructuralAnalysis": true
+    },
+    "tests/test_llm_client.py": {
+      "filePath": "tests/test_llm_client.py",
+      "contentHash": "f35b3a4527fb321a10816fd243a4ee78c2d034151b88b549e3a80d20793a506c",
+      "functions": [],
+      "classes": [
+        {
+          "name": "TestGetLLMClient",
+          "methods": [
+            "test_anthropic_without_base_url",
+            "test_openai_with_explicit_provider",
+            "test_openai_with_custom_base_url",
+            "test_anthropic_with_official_base_url"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 45
+        },
+        {
+          "name": "TestLLMClientCreateMessage",
+          "methods": [
+            "test_anthropic_create_message",
+            "test_openai_create_message",
+            "test_openai_uses_model_id_from_env",
+            "test_no_cache_control_key_in_system"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 122
+        }
+      ],
+      "imports": [
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "unittest.mock",
+          "specifiers": [
+            "MagicMock",
+            "patch"
+          ]
+        },
+        {
+          "source": "agent.config",
+          "specifiers": [
+            "get_llm_client",
+            "LLMClient"
+          ]
+        }
+      ],
+      "exports": [
+        "TestGetLLMClient",
+        "TestLLMClientCreateMessage"
+      ],
+      "totalLines": 176,
+      "hasStructuralAnalysis": true
+    },
+    "tests/test_state.py": {
+      "filePath": "tests/test_state.py",
+      "contentHash": "db26c9513e23f69ccce605d21a81f7e1b5d72624d368c65c1c8baf16bf053568",
+      "functions": [
+        {
+          "name": "test_agent_state_has_required_fields",
+          "params": [],
+          "exported": true,
+          "lineCount": 21
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "agent.state",
+          "specifiers": [
+            "AgentState"
+          ]
+        },
+        {
+          "source": "pathlib",
+          "specifiers": [
+            "Path"
+          ]
+        }
+      ],
+      "exports": [
+        "test_agent_state_has_required_fields"
+      ],
+      "totalLines": 26,
+      "hasStructuralAnalysis": true
+    }
+  }
+}
