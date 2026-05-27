@@ -26,6 +26,7 @@ def base_state(tmp_output):
     from agent.state import AgentState
     return AgentState(
         raw_input="构建一个任务管理系统",
+        auto_mode=False,
         requirements={},
         clarification_round=0,
         max_clarification_rounds=5,

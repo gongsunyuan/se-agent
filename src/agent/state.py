@@ -13,6 +13,7 @@ class Requirements(TypedDict, total=False):
 
 class AgentState(TypedDict):
     raw_input: str
+    auto_mode: bool  # 默认 False，--auto 时为 True
     requirements: Requirements
     clarification_round: int
     max_clarification_rounds: int
