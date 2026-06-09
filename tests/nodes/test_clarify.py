@@ -150,3 +150,96 @@ def test_parse_old_format_fallback(mock_get_client, tmp_path):
 
     assert result["clarify_questions"] == ["问题1", "问题2"]
     assert result["user_answers"] == ["自由答案1", "自由答案2"]
+
+
+@patch("agent.nodes.clarify.get_llm_client")
+def test_user_selects_option(mock_get_client, tmp_path):
+    """用户选 B → user_answers 含对应选项文字。"""
+    output_dir = tmp_path / "outputs"
+    output_dir.mkdir()
+
+    mock_client = MagicMock()
+    mock_client.create_message.return_value = json.dumps([
+        {"question": "认证方式？", "options": ["JWT", "Session", "OAuth"]},
+    ], ensure_ascii=False)
+    mock_get_client.return_value = mock_client
+
+    state = _make_state(auto_mode=False, output_dir=output_dir)
+    with patch("agent.nodes.clarify.Prompt") as mock_prompt:
+        mock_prompt.ask.side_effect = ["B"]
+        result = clarify(state)
+
+    assert result["user_answers"] == ["Session"]
+
+
+@patch("agent.nodes.clarify.get_llm_client")
+def test_user_types_custom(mock_get_client, tmp_path):
+    """用户选 T 再输入自定义文字 → user_answers 含自定义文字。"""
+    output_dir = tmp_path / "outputs"
+    output_dir.mkdir()
+
+    mock_client = MagicMock()
+    mock_client.create_message.return_value = json.dumps([
+        {"question": "认证方式？", "options": ["JWT", "Session"]},
+    ], ensure_ascii=False)
+    mock_get_client.return_value = mock_client
+
+    state = _make_state(auto_mode=False, output_dir=output_dir)
+    with patch("agent.nodes.clarify.Prompt") as mock_prompt:
+        # 第一次 ask 选 T，第二次 ask 是自定义输入
+        mock_prompt.ask.side_effect = ["T", "使用 Firebase Auth"]
+        result = clarify(state)
+
+    assert result["user_answers"] == ["使用 Firebase Auth"]
+
+
+@patch("agent.nodes.clarify.get_llm_client")
+def test_user_default_enter_selects_a(mock_get_client, tmp_path):
+    """Prompt.ask 传入 default='A'。"""
+    output_dir = tmp_path / "outputs"
+    output_dir.mkdir()
+
+    mock_client = MagicMock()
+    mock_client.create_message.return_value = json.dumps([
+        {"question": "认证方式？", "options": ["JWT", "Session"]},
+    ], ensure_ascii=False)
+    mock_get_client.return_value = mock_client
+
+    state = _make_state(auto_mode=False, output_dir=output_dir)
+    with patch("agent.nodes.clarify.Prompt") as mock_prompt:
+        # 模拟回车（返回默认值 A）
+        mock_prompt.ask.return_value = "A"
+        result = clarify(state)
+
+    # 验证 Prompt.ask 被调用时传了 default="A"
+    call_kwargs = mock_prompt.ask.call_args_list[0][1]
+    assert call_kwargs.get("default") == "A"
+    assert result["user_answers"] == ["JWT"]
+
+
+@patch("agent.nodes.clarify.get_llm_client")
+def test_clarify_log_unchanged(mock_get_client, tmp_path):
+    """澄清记录.md 只记问答文字，不记选项结构。"""
+    output_dir = tmp_path / "outputs"
+    output_dir.mkdir()
+
+    mock_client = MagicMock()
+    mock_client.create_message.return_value = json.dumps([
+        {"question": "认证方式？", "options": ["JWT", "Session"]},
+    ], ensure_ascii=False)
+    mock_get_client.return_value = mock_client
+
+    state = _make_state(auto_mode=False, output_dir=output_dir)
+    with patch("agent.nodes.clarify.Prompt") as mock_prompt:
+        mock_prompt.ask.side_effect = ["B"]
+        clarify(state)
+
+    clarify_path = output_dir / "澄清记录.md"
+    assert clarify_path.exists()
+    content = clarify_path.read_text(encoding="utf-8")
+    assert "认证方式？" in content
+    assert "Session" in content
+    assert "澄清轮次 1" in content
+    # 不应包含选项结构
+    assert "JWT" not in content
+    assert "options" not in content

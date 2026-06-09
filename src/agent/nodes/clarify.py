@@ -95,8 +95,26 @@ def clarify(state: AgentState) -> dict:
                 answers = [raw_answer]
     else:
         console.print(f"\n[bold yellow]澄清轮次 {state['clarification_round'] + 1}[/bold yellow]")
-        for q in questions:
-            answer = Prompt.ask(f"  [cyan]{q}[/cyan]")
+        for q_text, opts in parsed_questions:
+            if opts and len(opts) > 0:
+                # 有选项 → 选择题
+                rendered = render_choices(q_text, opts)
+                console.print(rendered)
+                letters = [chr(65 + i) for i in range(len(opts))] + ["T"]
+                answer_letter = Prompt.ask(
+                    "  请选择",
+                    choices=letters,
+                    default="A",
+                    case_sensitive=False,
+                )
+                if answer_letter.upper() == "T":
+                    answer = Prompt.ask("  请输入你的答案")
+                else:
+                    idx = ord(answer_letter.upper()) - 65  # 'A'=0, 'B'=1, ...
+                    answer = opts[idx]
+            else:
+                # 无选项 → 自由输入（老行为）
+                answer = Prompt.ask(f"  [cyan]{q_text}[/cyan]")
             answers.append(answer)
 
     output_dir: Path = state["output_dir"]
@@ -106,7 +124,8 @@ def clarify(state: AgentState) -> dict:
         round_num = state["clarification_round"] + 1
         mode_tag = " (auto)" if auto_mode else ""
         f.write(f"\n## 澄清轮次 {round_num}{mode_tag}\n\n")
-        for q, a in zip(questions, answers):
+        q_texts = [q_text for q_text, _ in parsed_questions] if parsed_questions else questions
+        for q, a in zip(q_texts, answers):
             f.write(f"**Q：** {q}\n\n**A：** {a}\n\n")
 
     log_execution(
@@ -116,8 +135,9 @@ def clarify(state: AgentState) -> dict:
         output_summary=f"answers={len(answers)}, next_round={state['clarification_round'] + 2}",
     )
 
+    clarify_questions_out = [q_text for q_text, _ in parsed_questions] if parsed_questions else questions
     return {
         "clarification_round": state["clarification_round"] + 1,
-        "clarify_questions": questions,
+        "clarify_questions": clarify_questions_out,
         "user_answers": answers,
     }
