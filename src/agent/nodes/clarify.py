@@ -12,6 +12,20 @@ from rich.prompt import Prompt
 console = Console()
 
 
+def render_choices(question: str, options: list[str]) -> str:
+    """将问题和选项渲染为终端显示字符串。不带选项时返回空字符串。"""
+    if not options or len(options) == 0:
+        return ""
+    letters = []
+    for i in range(len(options)):
+        letters.append(chr(65 + i))  # 65 = 'A'
+    lines = [f"  {question}"]
+    for letter, opt in zip(letters, options):
+        lines.append(f"    {letter}. {opt}")
+    lines.append("    T. Type something（自己输入）")
+    return "\n".join(lines)
+
+
 def clarify(state: AgentState) -> dict:
     client = get_llm_client()
     open_qs = state["requirements"].get("open_questions", [])

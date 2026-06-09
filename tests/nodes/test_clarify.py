@@ -57,6 +57,34 @@ def test_clarify_auto_mode_self_answers(mock_get_client, tmp_path):
     assert result["clarify_questions"] == ["认证方式应该怎么选？", "数据库用什么？"]
 
 
+from agent.nodes.clarify import render_choices
+
+
+def test_render_choices_normal():
+    """render_choices 生成带 A/B/C 编号的选项字符串。"""
+    result = render_choices("数据库选型？", ["PostgreSQL", "MySQL", "MongoDB"])
+    assert "数据库选型？" in result
+    assert "A. PostgreSQL" in result
+    assert "B. MySQL" in result
+    assert "C. MongoDB" in result
+    assert "T. Type something" in result
+
+
+def test_render_choices_two_options():
+    """2 个选项时只渲染 A、B。"""
+    result = render_choices("认证方式？", ["JWT", "Session"])
+    assert "A. JWT" in result
+    assert "B. Session" in result
+    assert "C." not in result
+    assert "T. Type something" in result
+
+
+def test_render_choices_no_options():
+    """空选项列表返回空字符串。"""
+    result = render_choices("随便问个问题", [])
+    assert result == ""
+
+
 @patch("agent.nodes.clarify.get_llm_client")
 def test_clarify_auto_mode_writes_clarify_log(mock_get_client, tmp_path):
     """Auto mode writes 澄清记录.md with Q&A pairs."""
