@@ -1,4 +1,5 @@
 """Tests for clarify node."""
+import json
 from unittest.mock import MagicMock, patch
 from pathlib import Path
 from agent.nodes.clarify import clarify
@@ -107,3 +108,45 @@ def test_clarify_auto_mode_writes_clarify_log(mock_get_client, tmp_path):
     assert "认证方式应该怎么选" in content
     assert "使用 JWT 认证" in content
     assert "澄清轮次 1" in content
+
+
+@patch("agent.nodes.clarify.get_llm_client")
+def test_parse_new_json_format(mock_get_client, tmp_path):
+    """LLM 返回 [{question, options}] 格式 → 正确解析问题与选项。"""
+    output_dir = tmp_path / "outputs"
+    output_dir.mkdir()
+
+    mock_client = MagicMock()
+    mock_client.create_message.return_value = json.dumps([
+        {"question": "认证方式？", "options": ["JWT", "Session"]},
+        {"question": "数据库？", "options": ["Pg", "MySQL"]},
+    ], ensure_ascii=False)
+    mock_get_client.return_value = mock_client
+
+    state = _make_state(auto_mode=False, output_dir=output_dir)
+    with patch("agent.nodes.clarify.Prompt") as mock_prompt:
+        mock_prompt.ask.side_effect = ["A", "B"]
+        result = clarify(state)
+
+    assert result["clarify_questions"] == ["认证方式？", "数据库？"]
+    assert result["user_answers"] == ["JWT", "MySQL"]
+    assert result["clarification_round"] == 1
+
+
+@patch("agent.nodes.clarify.get_llm_client")
+def test_parse_old_format_fallback(mock_get_client, tmp_path):
+    """LLM 返回老格式 ["q1", "q2"] → 降级为自由输入，不崩溃。"""
+    output_dir = tmp_path / "outputs"
+    output_dir.mkdir()
+
+    mock_client = MagicMock()
+    mock_client.create_message.return_value = '["问题1", "问题2"]'
+    mock_get_client.return_value = mock_client
+
+    state = _make_state(auto_mode=False, output_dir=output_dir)
+    with patch("agent.nodes.clarify.Prompt") as mock_prompt:
+        mock_prompt.ask.side_effect = ["自由答案1", "自由答案2"]
+        result = clarify(state)
+
+    assert result["clarify_questions"] == ["问题1", "问题2"]
+    assert result["user_answers"] == ["自由答案1", "自由答案2"]

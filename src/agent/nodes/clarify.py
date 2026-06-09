@@ -51,6 +51,18 @@ def clarify(state: AgentState) -> dict:
         except json.JSONDecodeError:
             questions = [raw]
 
+    # 规范化为统一格式：[(question_text, options_list_or_none), ...]
+    parsed_questions: list[tuple[str, list[str] | None]] = []
+    for item in questions:
+        if isinstance(item, dict):
+            q = item.get("question", "")
+            opts = item.get("options", [])
+            if not isinstance(opts, list):
+                opts = []
+            parsed_questions.append((q, opts))
+        elif isinstance(item, str):
+            parsed_questions.append((item, None))
+
     auto_mode = state.get("auto_mode", False)
     answers: list[str] = []
 
