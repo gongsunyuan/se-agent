@@ -11,6 +11,7 @@ from agent.nodes.gen_req_doc import generate_req_doc
 from agent.nodes.checkpoints import checkpoint_req_doc, checkpoint_high_level
 from agent.nodes.high_level import high_level_design
 from agent.nodes.detailed import detailed_design
+from agent.nodes.gen_uml import gen_uml_diagrams
 
 
 def _route_judge(state: AgentState) -> str:
@@ -50,6 +51,7 @@ def build_graph(use_memory: bool = True):
     g.add_node("high_level",   high_level_design)
     g.add_node("checkpoint_b", checkpoint_high_level)
     g.add_node("detail",       detailed_design)
+    g.add_node("gen_uml",       gen_uml_diagrams)
 
     g.set_entry_point("process")
     g.add_edge("process", "judge")
@@ -79,7 +81,8 @@ def build_graph(use_memory: bool = True):
         _route_checkpoint_b,
         {"ok": "detail", "revise": "high_level"},
     )
-    g.add_edge("detail", END)
+    g.add_edge("detail", "gen_uml")
+    g.add_edge("gen_uml", END)
 
     if use_memory:
         from pathlib import Path
