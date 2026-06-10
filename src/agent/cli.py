@@ -103,13 +103,6 @@ def run(
         else:
             break
 
-    # 渲染 PlantUML 图表为 PNG
-    try:
-        from agent.render_puml import render_diagrams
-        render_diagrams(output_dir)
-    except Exception as e:
-        console.print(f"[yellow]图表渲染跳过: {e}[/yellow]")
-
     console.print(Panel("[bold green]Agent 执行完成！[/bold green]"))
     console.print(f"输出文件位于: {output_dir}")
 

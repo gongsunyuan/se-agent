@@ -252,13 +252,6 @@ def run_auto_test(
                 break
 
         # -- Done ------------------------------------------------------------
-        # 渲染 PlantUML 图表为 PNG
-        try:
-            from agent.render_puml import render_diagrams
-            render_diagrams(output_dir)
-        except Exception as e:
-            console.print(f"[yellow]图表渲染跳过: {e}[/yellow]")
-
         console.print(Panel("[bold green]Auto-Test 完成！[/bold green]"))
         console.print(f"输出目录: {output_dir}")
         for f in sorted(output_dir.glob("*.md")):
