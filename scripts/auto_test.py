@@ -150,6 +150,7 @@ def run_auto_test(
         "detail_doc_path": None,
         "messages": [],
         "errors": [],
+        "uml_diagram_files": [],
     }
 
     console.print(
@@ -255,6 +256,10 @@ def run_auto_test(
         console.print(f"输出目录: {output_dir}")
         for f in sorted(output_dir.glob("*.md")):
             console.print(f"  - {f.name}")
+        diagrams_dir = output_dir / "diagrams"
+        if diagrams_dir.exists():
+            for f in sorted(diagrams_dir.glob("*.puml")):
+                console.print(f"  - diagrams/{f.name}")
 
     finally:
         patcher.stop()
