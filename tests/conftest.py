@@ -42,4 +42,5 @@ def base_state(tmp_output):
         detail_doc_path=None,
         messages=[],
         errors=[],
+        uml_diagram_files=[],
     )

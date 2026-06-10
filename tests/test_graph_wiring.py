@@ -13,6 +13,7 @@ def test_graph_has_expected_nodes():
         "process", "judge", "clarify",
         "gen_req_doc", "checkpoint_a",
         "high_level", "checkpoint_b", "detail",
+        "gen_uml",
         "__start__",
     }
     assert expected.issubset(nodes)
