@@ -58,6 +58,7 @@ def run(
         "detail_doc_path": None,
         "messages": [],
         "errors": [],
+        "uml_diagram_files": [],
     }
 
     for _ in graph.stream(initial_state, config=config, stream_mode="values"):
@@ -101,6 +102,13 @@ def run(
                 pass
         else:
             break
+
+    # 渲染 PlantUML 图表为 PNG
+    try:
+        from scripts.render_puml import render_diagrams
+        render_diagrams(output_dir)
+    except Exception as e:
+        console.print(f"[yellow]图表渲染跳过: {e}[/yellow]")
 
     console.print(Panel("[bold green]Agent 执行完成！[/bold green]"))
     console.print(f"输出文件位于: {output_dir}")
