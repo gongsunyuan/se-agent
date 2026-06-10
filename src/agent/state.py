@@ -29,3 +29,4 @@ class AgentState(TypedDict):
     detail_doc_path: Optional[str]
     messages: list
     errors: list[str]
+    uml_diagram_files: list[str]  # 生成的 .puml 文件路径列表
