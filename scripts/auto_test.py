@@ -254,7 +254,7 @@ def run_auto_test(
         # -- Done ------------------------------------------------------------
         # 渲染 PlantUML 图表为 PNG
         try:
-            from scripts.render_puml import render_diagrams
+            from agent.render_puml import render_diagrams
             render_diagrams(output_dir)
         except Exception as e:
             console.print(f"[yellow]图表渲染跳过: {e}[/yellow]")
