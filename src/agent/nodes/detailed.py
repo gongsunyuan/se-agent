@@ -44,23 +44,12 @@ def extract_modules(high_level_doc_path: Path, max_retries: int = 3) -> list[str
 
         except json.JSONDecodeError:
             # JSON 解析失败：正则兜底
-            # 尝试 1: 引号包裹的模块名 "模块A"、"模块B"
-            fallback = re.findall(r'["""]([^"""]+模块?)["""]\s*[,，]?\s*["""]([^"""]+模块?)["""]', raw)
-            if fallback:
-                result = []
-                for m in fallback:
-                    result.append(m[0])
-                    if len(m) > 1 and m[1]:
-                        result.append(m[1])
-                if len(result) >= 2:
-                    return result[:6]
+            # 统一提取所有引号包裹的模块名（单模块匹配，避免成对匹配丢奇数模块）
+            fallback = re.findall(r'[“”"]([^“”"]{2,6}(?:模块|系统|管理|服务|中心|平台))[“”"]', raw)
+            if len(fallback) >= 2:
+                return fallback[:6]
 
-            # 尝试 2: 引号包裹的单模块名
-            fallback_matches = re.findall(r'["""]([^"""]{2,8}(?:模块|系统|管理))["""]', raw)
-            if len(fallback_matches) >= 2:
-                return fallback_matches[:6]
-
-            # 尝试 3: 无引号，用 、或 ，分隔的中文模块名
+            # 无引号兜底：用、或，分隔的中文模块名
             no_quote = re.findall(r'([\u4e00-\u9fff]{2,6}(?:模块|系统|管理))', raw)
             if len(no_quote) >= 2:
                 return no_quote[:6]
