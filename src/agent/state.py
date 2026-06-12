@@ -30,3 +30,5 @@ class AgentState(TypedDict):
     messages: list
     errors: list[str]
     uml_diagram_files: list[str]  # 生成的 .puml 文件路径列表
+    detail_modules: list[str]  # 提取出的领域模块列表
+    detail_module_outputs: dict[str, str]  # {模块名: 生成内容}

@@ -43,4 +43,6 @@ def base_state(tmp_output):
         messages=[],
         errors=[],
         uml_diagram_files=[],
+        detail_modules=[],
+        detail_module_outputs={},
     )
