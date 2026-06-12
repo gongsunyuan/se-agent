@@ -97,7 +97,6 @@ def gen_module(
 def merge_and_review(
     high_level_doc_path: Path,
     module_outputs: dict[str, str],
-    output_dir: Path,
     max_retries: int = 3,
 ) -> str:
     """Phase 3: 汇总所有模块的详细设计片段，输出完整《详细设计.md》。"""
@@ -129,8 +128,6 @@ def merge_and_review(
                     f"## {name}\n\n{content}" for name, content in module_outputs.items()
                 )
                 return header + body
-
-    return ""
 
 
 def detailed_design(state: AgentState) -> dict:
@@ -169,6 +166,7 @@ def detailed_design(state: AgentState) -> dict:
 
     # Phase 2: 并发生成各模块
     module_outputs: dict[str, str] = {}
+    errors = state.get("errors", []).copy()
 
     def _gen_with_log(module_name: str) -> tuple[str, str | None]:
         result = gen_module(hl_path, module_name, max_retries=max_retries)
@@ -196,15 +194,17 @@ def detailed_design(state: AgentState) -> dict:
                 module_outputs[name] = content
 
     if not module_outputs:
-        state.setdefault("errors", []).append("detail: all modules failed to generate")
-        return _fallback_single_llm(state, "所有模块生成失败，回退单次模式")
+        errors.append("detail: all modules failed to generate")
+        result = _fallback_single_llm(state, "所有模块生成失败，回退单次模式")
+        result["errors"] = errors
+        return result
 
     skipped = [m for m in modules if m not in module_outputs]
     if skipped:
-        state.setdefault("errors", []).append(f"detail: skipped modules: {skipped}")
+        errors.append(f"detail: skipped modules: {skipped}")
 
     # Phase 3: 汇总合并
-    merged = merge_and_review(hl_path, module_outputs, output_dir, max_retries=max_retries)
+    merged = merge_and_review(hl_path, module_outputs, max_retries=max_retries)
     doc_path = output_dir / "详细设计.md"
     doc_path.write_text(merged, encoding="utf-8")
 
@@ -219,6 +219,7 @@ def detailed_design(state: AgentState) -> dict:
         "detail_doc_path": str(doc_path),
         "detail_modules": modules,
         "detail_module_outputs": module_outputs,
+        "errors": errors,
     }
 
 
@@ -252,4 +253,8 @@ def _fallback_single_llm(state: AgentState, reason: str) -> dict:
         output_summary=f"doc={doc_path}",
     )
 
-    return {"detail_doc_path": str(doc_path)}
+    return {
+        "detail_doc_path": str(doc_path),
+        "detail_modules": [],
+        "detail_module_outputs": {},
+    }
