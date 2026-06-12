@@ -153,14 +153,14 @@ class TestDetailedConcurrency:
             if node_name == "extract_modules":
                 return '["A模块", "B模块", "C模块"]'
 
+            if node_name == "merge_detail":
+                return "# 详细设计\n\n汇总内容..."
+
             call_count[0] += 1
             user_content = kwargs.get("user_content", "")
             for mod in ["A模块", "B模块", "C模块"]:
                 if mod in user_content:
                     return f"### {mod}详细设计\n\n内容..."
-
-            if node_name == "merge_detail":
-                return "# 详细设计\n\n汇总内容..."
 
             return "default"
 
