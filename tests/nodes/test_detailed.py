@@ -1,7 +1,6 @@
 # tests/nodes/test_detailed.py
 from unittest.mock import MagicMock, patch
 from pathlib import Path
-import tempfile
 from agent.nodes.detailed import extract_modules
 from agent.state import AgentState
 
@@ -61,7 +60,7 @@ class TestExtractModules:
 
     @patch("agent.nodes.detailed.get_llm_client")
     def test_retries_then_succeeds(self, mock_get_client, tmp_path):
-        """重试第 2 次成功"""
+        """前两次失败，第三次成功"""
         hl_path = _write_high_level_doc(tmp_path, "## 模块划分\n\n- A模块\n- B模块")
         mock_client = MagicMock()
         mock_client.create_message.side_effect = [
