@@ -230,3 +230,44 @@ class TestDetailedConcurrency:
 
         assert result.get("detail_doc_path") is not None
         assert Path(result["detail_doc_path"]).exists()
+
+
+class TestMergeAndReview:
+    """Phase 3: merge_and_review() 测试"""
+
+    @patch("agent.nodes.detailed.get_llm_client")
+    def test_normal_merge(self, mock_get_client, tmp_path):
+        """正常汇总合并"""
+        hl_path = _write_high_level_doc(tmp_path, "## 总体设计\n\n模块A、模块B")
+        mock_client = MagicMock()
+        mock_client.create_message.return_value = "# 详细设计\n\n合并后的完整文档"
+        mock_get_client.return_value = mock_client
+
+        from agent.nodes.detailed import merge_and_review
+        result = merge_and_review(
+            Path(hl_path),
+            {"模块A": "### 模块A 内容", "模块B": "### 模块B 内容"},
+        )
+
+        assert "详细设计" in result
+        assert mock_client.create_message.call_count == 1
+
+    @patch("agent.nodes.detailed.get_llm_client")
+    def test_fallback_concatenation_on_llm_failure(self, mock_get_client, tmp_path):
+        """merge LLM 全部重试失败 → 兜底拼接"""
+        hl_path = _write_high_level_doc(tmp_path, "## 总体设计\n\n模块A、模块B")
+        mock_client = MagicMock()
+        mock_client.create_message.side_effect = RuntimeError("merge failed")
+        mock_get_client.return_value = mock_client
+
+        from agent.nodes.detailed import merge_and_review
+        result = merge_and_review(
+            Path(hl_path),
+            {"模块A": "### 模块A 详细内容", "模块B": "### 模块B 详细内容"},
+            max_retries=3,
+        )
+
+        assert "汇总 LLM 调用失败" in result  # 兜底拼接警告
+        assert "模块A" in result
+        assert "模块B" in result
+        assert mock_client.create_message.call_count == 3

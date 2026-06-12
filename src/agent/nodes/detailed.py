@@ -137,11 +137,11 @@ def detailed_design(state: AgentState) -> dict:
 
     hl_path_str = state.get("high_level_doc_path")
     if not hl_path_str:
-        return _fallback_single_llm(state, "总体设计文档路径缺失")
+        return _fallback_single_llm(state, "总体设计文档路径缺失") | {"errors": state.get("errors", [])}
 
     hl_path = Path(hl_path_str)
     if not hl_path.exists():
-        return _fallback_single_llm(state, "总体设计文档不存在")
+        return _fallback_single_llm(state, "总体设计文档不存在") | {"errors": state.get("errors", [])}
 
     max_workers = int(os.environ.get("DETAIL_MAX_WORKERS", "12"))
     max_retries = int(os.environ.get("DETAIL_MODULE_MAX_RETRIES", "3"))
@@ -162,7 +162,7 @@ def detailed_design(state: AgentState) -> dict:
             decision="fallback to single LLM mode",
             output_summary="too few modules",
         )
-        return _fallback_single_llm(state, f"模块数不足（{len(modules)}），回退单次模式")
+        return _fallback_single_llm(state, f"模块数不足（{len(modules)}），回退单次模式") | {"errors": state.get("errors", [])}
 
     # Phase 2: 并发生成各模块
     module_outputs: dict[str, str] = {}
